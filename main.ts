@@ -1,6 +1,6 @@
-import { App, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { Plugin } from 'obsidian';
 import { getAPI as getDataviewAPI } from "obsidian-dataview";
-const { remote } = require('electron')
+const { remote } = require('electron');
 
 export default class TaskCount extends Plugin {
 	async onload() {
