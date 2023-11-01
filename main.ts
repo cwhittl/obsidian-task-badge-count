@@ -12,12 +12,18 @@ export default class TaskCount extends Plugin {
 		remote.app.dock.setBadge('')
 	}
 	async getSearch() {
+		console.log('start');
 		const dataviewApi = getDataviewAPI();
-		const taskQuery = `TABLE Tasks.path
+		console.log('got api');
+		const taskQuery = `TABLE Tasks.path, Tasks.status
 		WHERE file.tasks
 		FLATTEN file.tasks AS Tasks
-		WHERE Tasks.text != "" AND !contains(Tasks.path, "TPL") AND !Tasks.completed AND (Tasks.due = null OR date(Tasks.due) < date("tomorrow"))`;
-		var dataviewResults = await dataviewApi.tryQuery(taskQuery);
-		remote.app.dock.setBadge(dataviewResults.values.length > 0 ? dataviewResults.values.length.toString() : '')
+		WHERE Tasks.text != "" AND !contains(Tasks.path, "TPL") AND !Tasks.completed AND Tasks.status != "-" AND (Tasks.due = null OR date(Tasks.due) < date("tomorrow"))`;
+		dataviewApi.tryQuery(taskQuery).then((dataviewResults: any) => {
+			console.log('got results', dataviewResults);
+			remote.app.dock.setBadge(dataviewResults.values.length > 0 ? dataviewResults.values.length.toString() : '');
+			console.log('set badge');
+		});
+
 	}
 }
