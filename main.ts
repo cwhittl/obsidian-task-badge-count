@@ -21,7 +21,6 @@ export default class TaskCount extends Plugin {
 		TaskCount.clearBadge();
 	}
 	async getSearch() {
-		const start = Date.now();
 		setTimeout(() => {
 			const dataviewApi = getDataviewAPI();
 			const taskQuery = `TASK WHERE !completed AND text != "" AND status != "-" AND (due = null OR date(due) < date("tomorrow")) AND !contains(path, "TPL")`;
@@ -31,8 +30,6 @@ export default class TaskCount extends Plugin {
 				var secondsRan = (queryEnd.getTime() - queryStart.getTime()) / 1000;
 				console.log(`took ${secondsRan} to get the data back`);
 				TaskCount.setBadge(dataviewResults.values.length > 0 ? dataviewResults.values.length.toString() : '');
-				const millis = Date.now() - start;
-				console.log(`seconds elapsed = ${Math.floor(millis / 1000)}`);
 			})
 		}, 100);
 	}
