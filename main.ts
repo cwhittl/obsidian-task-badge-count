@@ -21,17 +21,19 @@ export default class TaskCount extends Plugin {
 		TaskCount.clearBadge();
 	}
 	async getSearch() {
-		const dataviewApi = getDataviewAPI();
-		const taskQuery = `TABLE Tasks.path, Tasks.status
-		WHERE file.tasks
-		FLATTEN file.tasks AS Tasks
-		WHERE Tasks.text != "" AND !contains(Tasks.path, "TPL") AND !Tasks.completed AND Tasks.status != "-" AND (Tasks.due = null OR date(Tasks.due) < date("tomorrow"))`;
-		var queryStart = new Date();
-		dataviewApi.tryQuery(taskQuery).then((dataviewResults: any) => {
-			var queryEnd = new Date();
-			var secondsRan = (queryEnd.getTime() - queryStart.getTime()) / 1000;
-			console.log(`took ${secondsRan} to get the data back`);
-			TaskCount.setBadge(dataviewResults.values.length > 0 ? dataviewResults.values.length.toString() : '');
-		});
+		const start = Date.now();
+		setTimeout(() => {
+			const dataviewApi = getDataviewAPI();
+			const taskQuery = `TASK WHERE !completed AND text != "" AND status != "-" AND (due = null OR date(due) < date("tomorrow")) AND !contains(path, "TPL")`;
+			var queryStart = new Date();
+			dataviewApi.tryQuery(taskQuery).then((dataviewResults: any) => {
+				var queryEnd = new Date();
+				var secondsRan = (queryEnd.getTime() - queryStart.getTime()) / 1000;
+				console.log(`took ${secondsRan} to get the data back`);
+				TaskCount.setBadge(dataviewResults.values.length > 0 ? dataviewResults.values.length.toString() : '');
+				const millis = Date.now() - start;
+				console.log(`seconds elapsed = ${Math.floor(millis / 1000)}`);
+			})
+		}, 100);
 	}
 }
