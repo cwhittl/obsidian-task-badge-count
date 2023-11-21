@@ -3,11 +3,15 @@ import { getAPI as getDataviewAPI } from "obsidian-dataview";
 const { remote } = require('electron');
 
 export default class TaskCount extends Plugin {
-	intervalTime: number = 60000;
-	firstBlood: number = 5000;
+	intervalTime: number = 10000;
+	firstBlood: number = 2000;
 
 	public static setBadge(badgeText: string) {
-		remote.app.dock.setBadge(badgeText)
+		try {
+			remote.app.dock.setBadge(badgeText)
+		} catch (error) {
+
+		}
 	}
 	public static clearBadge() {
 		TaskCount.setBadge('');
@@ -21,16 +25,14 @@ export default class TaskCount extends Plugin {
 		TaskCount.clearBadge();
 	}
 	async getSearch() {
-		setTimeout(() => {
-			const dataviewApi = getDataviewAPI();
-			const taskQuery = `TASK WHERE !completed AND text != "" AND status != "-" AND (due = null OR date(due) < date("tomorrow")) AND !contains(path, "TPL")`;
-			var queryStart = new Date();
-			dataviewApi.tryQuery(taskQuery).then((dataviewResults: any) => {
-				var queryEnd = new Date();
-				var secondsRan = (queryEnd.getTime() - queryStart.getTime()) / 1000;
-				console.log(`took ${secondsRan} to get the data back`);
-				TaskCount.setBadge(dataviewResults.values.length > 0 ? dataviewResults.values.length.toString() : '');
-			})
-		}, 100);
+		const dataviewApi = getDataviewAPI();
+		const taskQuery = `TASK WHERE !completed AND text != "" AND status != "-" AND (due = null OR date(due) < date("tomorrow")) AND !contains(path, "TPL")`;
+		var queryStart = new Date();
+		dataviewApi.tryQuery(taskQuery).then((dataviewResults: any) => {
+			var queryEnd = new Date();
+			var secondsRan = (queryEnd.getTime() - queryStart.getTime()) / 1000;
+			console.log(`took ${secondsRan} to get the data back`);
+			TaskCount.setBadge(dataviewResults.values.length > 0 ? dataviewResults.values.length.toString() : '');
+		})
 	}
 }

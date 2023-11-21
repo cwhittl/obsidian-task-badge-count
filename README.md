@@ -1,12 +1,11 @@
 
 # Obsidian Task Badge Count
-This sets the badge count in OSX for open tasks.
+This sets the badge count in OSX for open tasks that don't have a due date,are due today, or overdue.
 
-It requires the dataview plugin to work
 ## Requirements
 
  - [Obsidian.md](https://obsidian.md/)
- - [Obsidan Local Rest API Plugin](https://github.com/coddingtonbear/obsidian-local-rest-api)
+ - [Dataview](https://blacksmithgu.github.io/obsidian-dataview/)
 
 
 ## Authors
