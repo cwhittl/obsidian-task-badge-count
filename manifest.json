@@ -1,11 +1,11 @@
 {
 	"id": "task-badge-count",
 	"name": "Task Badge Count",
-	"version": "1.0.0",
+	"version": "1.2.0",
 	"minAppVersion": "0.15.0",
-	"description": "This is a task badge count for Obsidian. This plugin demonstrates some of the capabilities of the Obsidian API.",
+	"description": "This is a task badge count for Obsidian on OSX Only",
 	"author": "cwhittl",
 	"authorUrl": "https://github.com/cwhittl",
 	"fundingUrl": "https://github.com/cwhittl",
-	"isDesktopOnly": false
+	"isDesktopOnly": true
 }
