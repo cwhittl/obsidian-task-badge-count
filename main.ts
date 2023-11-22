@@ -1,6 +1,5 @@
 import { Plugin } from 'obsidian';
 import { getAPI as getDataviewAPI } from "obsidian-dataview";
-const { remote } = require('electron');
 
 export default class TaskCount extends Plugin {
 	intervalTime: number = 10000;
@@ -8,9 +7,12 @@ export default class TaskCount extends Plugin {
 
 	public static setBadge(badgeText: string) {
 		try {
-			remote.app.dock.setBadge(badgeText)
+			//OSX 
+			const { remote } = require('electron');
+			remote.app.dock.setBadge(badgeText);
 		} catch (error) {
-
+			//NOT OSX
+			//TODO Add options for IOS/Android/Windows
 		}
 	}
 	public static clearBadge() {
